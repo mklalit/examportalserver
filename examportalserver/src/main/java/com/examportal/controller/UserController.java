@@ -29,8 +29,8 @@ public class UserController {
 	public User createUser(@RequestBody User user) throws Exception {
 
 		Role role1 = new Role();
-		role1.setRoleId(44L);
-		role1.setRoleName("ADMIN");
+		role1.setRoleId(45L);
+		role1.setRoleName("NORMAL");
 
 		Set<UserRole> userRoleSet = new HashSet<>();
 		UserRole userRole = new UserRole();

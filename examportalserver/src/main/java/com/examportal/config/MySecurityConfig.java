@@ -60,7 +60,8 @@ public class MySecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth -> auth.antMatchers("/user/").permitAll()
-						.antMatchers("/auth/login").permitAll().anyRequest().authenticated());
+				.antMatchers("/generate-token").permitAll()
+				.anyRequest().authenticated());
 
 		http.authenticationProvider(authenticationProvider());
 

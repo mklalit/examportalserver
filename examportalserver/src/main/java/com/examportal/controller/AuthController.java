@@ -1,5 +1,7 @@
 package com.examportal.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +25,10 @@ import com.examportal.Repo.UserRepository;
 import com.examportal.config.JwtUtils;
 import com.examportal.model.JwtRequest;
 import com.examportal.model.JwtResponse;
+import com.examportal.model.User;
 import com.examportal.service.impl.UserDetailsServiceImpl;
 
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/auth/")
 public class AuthController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -46,7 +48,7 @@ public class AuthController {
 	@Autowired
 	private JwtUtils jwtUtils;
 
-	@PostMapping("/login")
+	@PostMapping("/generate-token")
 	public ResponseEntity<?> generateTokn(@RequestBody JwtRequest loginRequest) throws Exception {
 		try {
 			authenticate(loginRequest.getUsername(), loginRequest.getPassword());
@@ -73,5 +75,10 @@ public class AuthController {
 			// TODO: handle exception
 			throw new Exception("Bad credentail!!" + e.getMessage());
 		}
+	}
+
+	@GetMapping("/curent-user")
+	public User getCurrentUser(Principal principal) {
+		return ((User) this.userDetailsService.loadUserByUsername(principal.getName()));
 	}
 }
